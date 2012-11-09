@@ -28,6 +28,8 @@
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeContext>
 
+#include <QtCore/QtPlugin>
+
 #include <qplatformdefs.h>
 
 #include "settings.h"
@@ -38,6 +40,9 @@
 
 #include "receiver.h"
 
+
+Q_IMPORT_PLUGIN(QIOSIntegrationPlugin)
+
 int main(int argc, char *argv[])
 {
     QApplication application(argc, argv);
@@ -45,6 +50,7 @@ int main(int argc, char *argv[])
     application.setApplicationVersion(QString(QTOSTRING(VERSION)).remove('"'));
     application.setOrganizationDomain("cutehacks.com");
     application.setOrganizationName("Cutehacks");
+    application.setFont(QFont("Helvetica"));
 
     QDeclarativeView view;
     RequestQueueThread::setManager(view.engine()->networkAccessManager());
@@ -84,7 +90,8 @@ int main(int argc, char *argv[])
     context->setContextProperty("nhdMode", QVariant(false));
     context->setContextProperty("showTime", QVariant(false));
     view.setSource(QUrl("qrc:/qml/Main.qml"));
-    view.resize(480, 700);
+    view.winId();          // force platorm window creation.
+    view.resize(320, 566);
     view.show();
 #endif
 
